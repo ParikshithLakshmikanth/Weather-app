@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Application</title>
+    <style>
+        html {
+            background-color: white;
+            color: black;
+        }
+
+        #location {
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #weather-info {
+            color: black;
+        }
+        #Header {
+            background-color: black;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+        #input {
+            margin: 20px;
+            align-items: center;
+            width: 50%;
+        }
+        #btn{
+            color: white;
+            background-color: blue;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5%;
+        }
+        #btn:hover {
+            background-color: darkblue;
+        }
+        #form{
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px; 
+        }
+        #heading{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="Header">
+        <h1>Weather Information</h1>
+    </div><br>
+    <div id="input">
+        <fieldset id="form">
+            <h1 id="heading">Get Weather Information</h1>
+        <form id="location-form">
+            <label for="location">Enter a city name (and optionally, a country code, separated by a comma):</label><br><br>
+            <input type="text" id="location" name="location" required>
+            <button type="submit" id="btn">Get Weather</button>
+        </form>
+            <div id="weather-info">
+    </div>
+        </fieldset>
+    </div>
+    <script>
+        const weatherInfoDiv = document.getElementById('weather-info'); const locationInput = document.getElementById('location');
+        document.getElementById('location-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const location = locationInput.value;
+            // Make an AJAX request to the server with the location as a query parameter
+            const response = await
+                fetch(`/weather?location=${encodeURIComponent(location)}`); const weatherData = await response.json();
+            if (weatherData && !weatherData.error) {
+                // Display weather information 
+                weatherInfoDiv.innerHTML = `
+<p>City: ${weatherData.city}</p>
+<p>Temperature: ${weatherData.temperature}</p>
+<p>Weather: ${weatherData.description}</p>
+`;
+            } else {
+                // Display an error message
+                weatherInfoDiv.innerHTML = `<p>${weatherData.error || 'An error occurred.'}</p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
